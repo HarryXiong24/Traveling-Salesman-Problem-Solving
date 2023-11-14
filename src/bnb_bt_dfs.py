@@ -64,11 +64,13 @@ def branch_and_bound(
 
                 # 计算 bound
                 if level == 1:
+                    # 起始城市最小边 + 当前考虑的城市最小边
                     bound -= (
                         first_min(distance_data, city_count, path[level - 1])
                         + first_min(distance_data, city_count, i)
                     ) / 2
                 else:
+                    # 因为最小边可能已经被使用了，要考虑当前城市的最小 + 上一个城市到当前城市的第二小边
                     bound -= (
                         second_min(distance_data, city_count, path[level - 1])
                         + first_min(distance_data, city_count, i)
@@ -82,7 +84,6 @@ def branch_and_bound(
                 # 恢复前一个 bound 和 weight
                 weight -= distance_data[path[level - 1]][i]
                 bound = temp
-
                 # 清除路径
                 path[level] = -1
 
