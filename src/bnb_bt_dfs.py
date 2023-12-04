@@ -6,7 +6,9 @@
 from typing import List
 
 
-def first_min(distance_data: List[List[float]], city_count: int, current_city: int):
+def first_min(
+    distance_data: List[List[float]], city_count: int, current_city: int
+) -> float:
     min_val = float("inf")
     for i in range(city_count):
         if distance_data[current_city][i] < min_val and current_city != i:
@@ -15,7 +17,9 @@ def first_min(distance_data: List[List[float]], city_count: int, current_city: i
 
 
 # 获取第二小边
-def second_min(distance_data: List[List[float]], city_count: int, current_city: int):
+def second_min(
+    distance_data: List[List[float]], city_count: int, current_city: int
+) -> float:
     first, second = float("inf"), float("inf")
     for i in range(city_count):
         if current_city == i:
@@ -30,7 +34,7 @@ def second_min(distance_data: List[List[float]], city_count: int, current_city: 
 
 def branch_and_bound(
     city_count: int, distance_data: List[List[float]]
-) -> [float, List[int]]:
+) -> tuple[float, List[int]]:
     # 定义无穷大作为初始的最小路径长度
     best_path_cost = float("inf")
     best_path = []
@@ -98,4 +102,4 @@ def branch_and_bound(
 
     # 调用递归函数
     recursive(bound, 0, 1, path)
-    return [best_path_cost, best_path]
+    return (best_path_cost, best_path)
