@@ -1,3 +1,5 @@
+from multiprocessing import Pool
+import os
 import random
 from typing import List
 
@@ -31,20 +33,34 @@ def find_best(
     return (best_path, min_distance)
 
 
-def sls_single_start(
-    city_count: int, distance_data: List[List[float]], exec_count_limit: int
-) -> tuple[float, List[int]]:
+def find_best_from_random_start(
+    city_count: int, distance_data: List[List[float]]
+) -> tuple[List[int], float]:
     # 初始化路径为城市的顺序排列
     current_path = list(range(city_count))
-    random.shuffle(current_path)  # 随机打乱路径
-    current_distance = calculate_total_distance(current_path, distance_data)
+    # 随机打乱路径
+    random.shuffle(current_path)
+    return find_best(current_path, distance_data)
 
-    for _ in range(exec_count_limit):
-        new_path, new_distance = find_best(current_path.copy(), distance_data)
 
-        # 如果新路径的距离更短，则接受这个新路径
-        if new_distance < current_distance:
-            current_path = new_path
-            current_distance = new_distance
+def sls_multi_processes(
+    city_count: int,
+    distance_data: List[List[float]],
+    exec_count_limit: int,
+    processes_count: int = 1,
+) -> tuple[float, List[int]]:
+    best_global_distance = float("inf")
+    best_global_path = None
 
-    return (current_distance, current_path)
+    with Pool(processes=processes_count) as pool:
+        results = pool.starmap(
+            find_best_from_random_start,
+            [(city_count, distance_data) for _ in range(exec_count_limit)],
+        )
+
+    for path, distance in results:
+        if distance < best_global_distance:
+            best_global_distance = distance
+            best_global_path = path
+
+    return (best_global_distance, best_global_path)

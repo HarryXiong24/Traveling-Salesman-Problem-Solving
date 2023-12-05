@@ -32,7 +32,7 @@ def second_min(
     return second
 
 
-def branch_and_bound(
+def branch_and_bound_single_process(
     city_count: int, distance_data: List[List[float]]
 ) -> tuple[float, List[int]]:
     # 定义无穷大作为初始的最小路径长度
