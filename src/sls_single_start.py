@@ -1,6 +1,5 @@
 import random
 from typing import List
-from multiprocessing import Pool
 
 
 def calculate_total_distance(
@@ -17,11 +16,11 @@ def calculate_total_distance(
 
 
 def find_best(
-    current_path: List[int], distance_data: List[List[float]], segment: range
+    current_path: List[int], distance_data: List[List[float]]
 ) -> tuple[List[int], float]:
     min_distance = calculate_total_distance(current_path, distance_data)
     best_path = current_path
-    for i in segment:
+    for i in range(0, len(current_path)):
         for j in range(i + 1, len(current_path)):
             new_path = current_path.copy()
             new_path[i], new_path[j] = new_path[j], new_path[i]
@@ -32,48 +31,16 @@ def find_best(
     return (best_path, min_distance)
 
 
-def find_best_parallel(
-    current_path: List[int], distance_data: List[List[float]], processes_count: int
-) -> tuple[List[int], float]:
-    # 将路径分割为多个段，每个进程处理一个段
-    segments = [
-        range(i, len(current_path), processes_count) for i in range(processes_count)
-    ]
-
-    with Pool(processes=processes_count) as pool:
-        results = pool.starmap(
-            find_best,
-            [(current_path, distance_data, segment) for segment in segments],
-        )
-
-    # 找到所有子集中的最佳路径
-    min_distance = float("inf")
-    best_path = None
-    for path, distance in results:
-        if distance < min_distance:
-            min_distance = distance
-            best_path = path
-
-    return (best_path, min_distance)
-
-
-def sls_multi_precesses(
-    city_count: int,
-    distance_data: List[List[float]],
-    exec_count_limit: int,
-    processes_count: int = 1,
+def sls_single_start(
+    city_count: int, distance_data: List[List[float]], exec_count_limit: int
 ) -> tuple[float, List[int]]:
     # 初始化路径为城市的顺序排列
     current_path = list(range(city_count))
     random.shuffle(current_path)  # 随机打乱路径
     current_distance = calculate_total_distance(current_path, distance_data)
 
-    print(processes_count)
-
     for _ in range(exec_count_limit):
-        new_path, new_distance = find_best_parallel(
-            current_path.copy(), distance_data, processes_count
-        )
+        new_path, new_distance = find_best(current_path.copy(), distance_data)
 
         # 如果新路径的距离更短，则接受这个新路径
         if new_distance < current_distance:
