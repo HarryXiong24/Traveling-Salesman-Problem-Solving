@@ -58,9 +58,9 @@ def sls_multi_processes(
             [(city_count, distance_data) for _ in range(exec_count_limit)],
         )
 
-    for path, distance in results:
-        if distance < best_global_distance:
-            best_global_distance = distance
-            best_global_path = path
+        for path, distance in results:
+            if distance < best_global_distance:
+                best_global_distance = distance
+                best_global_path = path
 
     return (best_global_distance, best_global_path)
