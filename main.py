@@ -9,36 +9,38 @@ import time
 
 if __name__ == "__main__":
     # Generate the data
-    n = int(input("Enter the number of locations: "))
-    mean = float(input("Enter the mean: "))
-    sigma = float(input("Enter the standard deviation: "))
-    file_name = write_distance_matrix(n, mean, sigma)
+    # n = int(input("Enter the number of locations: "))
+    # mean = float(input("Enter the mean: "))
+    # sigma = float(input("Enter the standard deviation: "))
+    # file_name = write_distance_matrix(n, mean, sigma)
 
     # Read File
-    [CITY_COUNT, DISTANCE_DATA] = read_file(file_name)
+    [CITY_COUNT, DISTANCE_DATA] = read_file(
+        "./competition/tsp-problem-25-6-100-5-1.txt"
+    )
 
     # Test Case
     # CITY_COUNT, DISTANCE_DATA = get_test_data()
 
-    exec_count_limit = 100000
+    exec_count_limit = 200
     cpu_count = get_cpu_count()
 
     print("--------------------")
 
     # Test BnB
-    bnb_start_time_1 = time.time()
-    # Apply the Branch and Bound algorithm to find the shortest path for the TSP
-    bnb_best_cost_1, bnb_best_path_1 = branch_and_bound_single_process(
-        CITY_COUNT, DISTANCE_DATA
-    )
-    bnb_end_time_1 = time.time()
+    # bnb_start_time_1 = time.time()
+    # # Apply the Branch and Bound algorithm to find the shortest path for the TSP
+    # bnb_best_cost_1, bnb_best_path_1 = branch_and_bound_single_process(
+    #     CITY_COUNT, DISTANCE_DATA
+    # )
+    # bnb_end_time_1 = time.time()
 
     # Print Result
-    print("BnB Result(single-process)")
-    print("Best Cost: ", bnb_best_cost_1)
-    print("Best Path: ", bnb_best_path_1)
-    print(f"Time Consume: {bnb_end_time_1-bnb_start_time_1} seconds")
-    print("--------------------")
+    # print("BnB Result(single-process)")
+    # print("Best Cost: ", bnb_best_cost_1)
+    # print("Best Path: ", bnb_best_path_1)
+    # print(f"Time Consume: {bnb_end_time_1-bnb_start_time_1} seconds")
+    # print("--------------------")
 
     # Test SLS
     sls_start_time_1 = time.time()

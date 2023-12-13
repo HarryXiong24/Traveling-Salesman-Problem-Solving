@@ -1,0 +1,40 @@
+This zip file has a set of benchmarks TSP problems. Problem sizes range from 25 to 1000; some students have quite good algorithms, so we are including problems with up to 1000 variables. There is no particular problem size that you have to solve; just go from the smallest to the largest, and try to solve as many as you can.
+
+For reference, we are including the python program (genTSP.py) that was used to generate the benchmark problems. But again, your code (when properly designed and written) should run just fine on these problems. The file format of these problem is exactly as the original file format you were given.
+
+For your experiments, use a timeout of 10 minutes (600 seconds) - report the best result you have after 10 minutes.
+
+this is how the benchmarks problems were generated : note the number K below is something the generator we provided earlier did not use, but it should not matter for you code/algorithm
+----------------------------------------------------
+
+1) the input is
+    - N = number of locations,
+    - P = number of problem instances to generate,
+    - N(u,v) = mean/variance of normal distribution for the distances,
+    - K = number of distinct distance values to use,
+    - random seed
+2) given N, generate P random instances
+    - randomly pick K distance numbers from N(u,v) normal distribution
+    - randomly assign the distances to the NxN distance matrix (note this matrix should be symmetric)
+3) for each problem instance, output a text file
+    - first row -> N
+    - all other rows (1,...,N) -> for row i output distances to all other locations, from location i; values can be separated by space
+
+File spec :
+-----------
+
+##### each file has name:
+`tsp-problem-{n}-{k}-{u}-{v}-{i}.txt`
+
+###### where 
+ - `{n}` - number of locations,
+ - `{k}` - number of distinct distance values to use,
+ - `{u}` - mean of normal distribution for distances (for files in this folder, **`u is always 100`**),
+ - `{v}` - variance (standard deviation) of normal distribution for distances, 
+ - `{i}` - is the index (1 ~ p) of the problem instance (for files in this folder, **`i is always 1`**);
+
+##### each file follows format:
+ - first row  -> `{n}`
+ - all other (`n`) rows compose the adjacency matrix for a complete graph,
+   - row `i` are writen with distances from location `i` to all other locations,
+   - distances are delimited by whitespace.
