@@ -2,6 +2,7 @@ import csv
 import os
 import time
 from src.sls_multi_processes import sls_multi_processes
+from src.bnb_dfs_single_process import branch_and_bound_single_process
 import concurrent.futures
 
 
@@ -18,7 +19,9 @@ def run_algorithm_with_timeout(city_count, distance_matrix):
 
     with concurrent.futures.ProcessPoolExecutor(max_workers=1) as executor:
         future = executor.submit(
-            sls_multi_processes, city_count, distance_matrix, 200, 10
+            branch_and_bound_single_process,
+            city_count,
+            distance_matrix,
         )
         try:
             best_distance, best_solution = future.result(timeout=timeout_seconds)
@@ -71,6 +74,6 @@ def process_tsp_files(folder_path, output_csv, group_number, student_ids):
 if __name__ == "__main__":
     group_number = "66"  # Group number
     student_ids = "90567289, 42249152, 87606914"  # Student IDs
-    tsp_folder_path = "../competition/"  # Path to your TSP files
-    results_csv_path = "./results.csv"  # Path for the results CSV
+    tsp_folder_path = "./competition/"  # Path to your TSP files
+    results_csv_path = "./results_bnb.csv"  # Path for the results CSV
     process_tsp_files(tsp_folder_path, results_csv_path, group_number, student_ids)
